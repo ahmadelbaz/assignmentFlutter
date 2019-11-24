@@ -8,7 +8,6 @@ import 'models/transfers.dart';
 import 'widgets/transfers_list.dart';
 
 class App extends StatefulWidget {
-  int g = 5;
   @override
   _AppState createState() => _AppState();
 }
