@@ -9,6 +9,7 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build() ChartBar.dart');
     return Column(
       children: <Widget>[
         FittedBox(child: Text(costAmount.toStringAsFixed(0))),

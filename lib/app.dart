@@ -59,9 +59,9 @@ class _AppState extends State<App> {
     final mediaQuery = MediaQuery.of(context);
     final isRotated = mediaQuery.orientation == Orientation.landscape;
 
-    final PreferredSize appBar = Platform.isIOS
+    final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text('Flutter Assignment'),
+            middle: const Text('Flutter Assignment'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -129,7 +129,7 @@ class _AppState extends State<App> {
                   height: (mediaQuery.size.height -
                           appBar.preferredSize.height -
                           mediaQuery.padding.top) *
-                      .3,
+                      .4,
                   child: Chart(
                     _recentTransfers,
                   ),

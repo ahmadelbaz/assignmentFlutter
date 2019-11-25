@@ -1,19 +1,23 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_assignment/widgets/adaptive_flat_button.dart';
 import 'package:intl/intl.dart';
 
 class NewTransfers extends StatefulWidget {
-  final Function newTr;
-
   NewTransfers(this.newTr);
+
+  final Function newTr;
 
   @override
   _NewTransfersState createState() => _NewTransfersState();
 }
 
 class _NewTransfersState extends State<NewTransfers> {
-  final nameController = TextEditingController();
-  final costController = TextEditingController();
   DateTime chosenDate = DateTime.now();
+  final costController = TextEditingController();
+  final nameController = TextEditingController();
 
   void submitData() {
     final String nController = nameController.text;
@@ -77,15 +81,7 @@ class _NewTransfersState extends State<NewTransfers> {
                     Text(chosenDate == null
                         ? 'No Date Chosen'
                         : 'Picked Date : ${DateFormat.yMd().format(chosenDate)}'),
-                    FlatButton(
-                      child: Text(
-                        'Choose Day',
-                        style: TextStyle(
-                            color: Theme.of(context).accentColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: _addingDatePicker,
-                    ),
+                    AdaptiveFlatButton('Choose Date', _addingDatePicker)
                   ],
                 ),
               ),
