@@ -1,5 +1,5 @@
 class Transfers {
-  final int id;
+  final String id;
   final String club;
   final String playerName;
   final double cost;

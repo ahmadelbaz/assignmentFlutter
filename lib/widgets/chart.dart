@@ -18,7 +18,7 @@ class Chart extends StatelessWidget {
         if (currentList[n].dateTime.day == weekDay.day &&
             currentList[n].dateTime.month == weekDay.month &&
             currentList[n].dateTime.year == weekDay.year) {
-          totalCost += currentList[n].cost;          
+          totalCost += currentList[n].cost;
         }
       }
 
@@ -54,7 +54,7 @@ class Chart extends StatelessWidget {
         }).toList(),
       ),
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
     );
   }
 }

@@ -63,13 +63,13 @@ class _NewTransfersState extends State<NewTransfers> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               TextField(
-                decoration: InputDecoration(labelText: 'Player Name'),
+                decoration: const InputDecoration(labelText: 'Player Name'),
                 controller: nameController,
                 onSubmitted: (_) => submitData,
               ),
               TextField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Cost'),
+                decoration: const InputDecoration(labelText: 'Cost'),
                 controller: costController,
                 onSubmitted: (_) => submitData,
               ),
@@ -87,7 +87,7 @@ class _NewTransfersState extends State<NewTransfers> {
               ),
               RaisedButton(
                 elevation: 5,
-                child: Text(
+                child: const Text(
                   'Add Transfer',
                   style: TextStyle(color: Colors.white),
                 ),

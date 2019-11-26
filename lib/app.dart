@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_assignment/widgets/chart.dart';
 import 'package:flutter_assignment/widgets/new_transfers.dart';
 import 'models/transfers.dart';
-import 'widgets/transfers_list.dart';
+import 'widgets/transfer_list.dart';
 
 class App extends StatefulWidget {
   @override
@@ -17,7 +17,7 @@ class _AppState extends State<App> {
   final List<Transfers> transfersList = [];
 
   void _addNewTransfer(String trName, double trCost, DateTime chosenDay) {
-    var newTr = Transfers(3, 'Arsenal', trName, trCost, 8.20, chosenDay);
+    var newTr = Transfers(DateTime.now().toString(), 'Arsenal', trName, trCost, 8.20, chosenDay);
 
     setState(() {
       transfersList.add(newTr);
@@ -48,18 +48,66 @@ class _AppState extends State<App> {
     }).toList();
   }
 
-  void _deleteItem(int index) {
+  void _deleteItem(String idd) {
     setState(() {
-      transfersList.removeAt(index);
+      transfersList.removeWhere((tr) => tr.id == idd);
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final isRotated = mediaQuery.orientation == Orientation.landscape;
+  List<Widget> _buildLandscapeContent(
+    Widget trList,
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+  ) {
+    return [
+      Row(
+        children: <Widget>[
+          const Text('Change View : '),
+          Switch.adaptive(
+            value: isChart,
+            onChanged: (val) {
+              setState(() {
+                isChart = val;
+              });
+            },
+          )
+        ],
+      ),
+      isChart
+          ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  .7,
+              child: Chart(
+                _recentTransfers,
+              ),
+            )
+          : trList
+    ];
+  }
 
-    final PreferredSizeWidget appBar = Platform.isIOS
+  List<Widget> _buildPortraitContent(
+    Widget trList,
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+  ) {
+    return [
+      Container(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            .4,
+        child: Chart(
+          _recentTransfers,
+        ),
+      ),
+      trList,
+    ];
+  }
+
+  Widget _buildAppBar(){
+    return Platform.isIOS
         ? CupertinoNavigationBar(
             middle: const Text('Flutter Assignment'),
             trailing: Row(
@@ -72,14 +120,22 @@ class _AppState extends State<App> {
             ),
           )
         : AppBar(
-            title: Text('Flutter Assignment'),
+            title: const Text('Flutter Assignment'),
             actions: <Widget>[
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () => _startAddingTransfer(context),
               ),
             ],
           );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isRotated = mediaQuery.orientation == Orientation.landscape;
+
+    final PreferredSizeWidget appBar = _buildAppBar();
     var trList = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
@@ -99,42 +155,9 @@ class _AppState extends State<App> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               if (isRotated)
-                Row(
-                  children: <Widget>[
-                    Text('Change View : '),
-                    Switch.adaptive(
-                      value: isChart,
-                      onChanged: (val) {
-                        setState(() {
-                          isChart = val;
-                        });
-                      },
-                    )
-                  ],
-                ),
-              if (isRotated)
-                isChart
-                    ? Container(
-                        height: (mediaQuery.size.height -
-                                appBar.preferredSize.height -
-                                mediaQuery.padding.top) *
-                            .7,
-                        child: Chart(
-                          _recentTransfers,
-                        ),
-                      )
-                    : trList,
+                ..._buildLandscapeContent(trList, mediaQuery, appBar),
               if (!isRotated)
-                Container(
-                  height: (mediaQuery.size.height -
-                          appBar.preferredSize.height -
-                          mediaQuery.padding.top) *
-                      .4,
-                  child: Chart(
-                    _recentTransfers,
-                  ),
-                ),
-              if (!isRotated) trList,
+                ..._buildPortraitContent(trList, mediaQuery, appBar),
             ],
           ),
         ),
@@ -152,7 +175,7 @@ class _AppState extends State<App> {
                 ? Container()
                 : FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: () => _startAddingTransfer(context),
             ),
           );
